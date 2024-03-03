@@ -42,10 +42,14 @@ jobs:
           EOF
           
       - name: deploy basic configuration
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
         run: |
           ansible-playbook basic-config.yml
           
       # Runs a set of commands using the runners shell
       - name: deploy security policies
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
         run: |
           ansible-playbook security.yml
