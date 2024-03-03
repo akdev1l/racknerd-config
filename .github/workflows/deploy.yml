@@ -47,11 +47,12 @@ jobs:
           ANSIBLE_CONNECTION_PATH: /tmp/.github-actions
         run: |
           . /tmp/ssh-agent.txt
-          ansible-playbook -vvvv basic-config.yml
+          ansible-playbook basic-config.yml
           
       # Runs a set of commands using the runners shell
       - name: deploy security policies
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
         run: |
+          . /tmp/ssh-agent.txt
           ansible-playbook security.yml
