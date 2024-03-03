@@ -30,13 +30,12 @@ jobs:
 
       - name: prepare credentials
         run: |
-          mkdir ~/.ssh
+          mkdir -p ~/.ssh
           umask 077
           ssh-keyscan -p 5322 chicago.akdev.xyz >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
-          cat > ~/.ssh/id_ecdsa <<EOF
-          ${{ secrets.MANAGEMENT_SSH_PRIVATE_KEY }}
-          EOF
+          eval $(ssh-agent)
+          ssh-add - <<<'${{ secrets.MANAGEMENT_SSH_PRIVATE_KEY }}'
           cat > .vault-password <<EOF
           ${{ secrets.MANAGEMENT_PASSWORD }}
           EOF
