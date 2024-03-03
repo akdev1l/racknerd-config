@@ -34,7 +34,8 @@ jobs:
           umask 077
           ssh-keyscan -p 5322 chicago.akdev.xyz >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
-          eval $(ssh-agent)
+          ssh-agent > /tmp/ssh-agent.txt
+          . /tmp/ssh-agent.txt
           ssh-add - <<<'${{ secrets.MANAGEMENT_SSH_PRIVATE_KEY }}'
           cat > .vault-password <<EOF
           ${{ secrets.MANAGEMENT_PASSWORD }}
@@ -45,6 +46,7 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
           ANSIBLE_CONNECTION_PATH: /tmp/.github-actions
         run: |
+          . /tmp/ssh-agent.txt
           ansible-playbook -vvvv basic-config.yml
           
       # Runs a set of commands using the runners shell
