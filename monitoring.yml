@@ -1,0 +1,9 @@
+---
+- name: deploy monitoring configuration
+  hosts: all
+  vars_files:
+    - vars/management.yml
+    - vars/secrets.yml
+  tasks:
+    - debug:
+        msg: "monitoting configuration"

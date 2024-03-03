@@ -1,0 +1,7 @@
+---
+- name: enable EPEL on RHEL-based systems
+  become: yes
+  when: ansible_facts["distribution"] == "AlmaLinux"
+  dnf:
+    name: epel-release
+    state: present

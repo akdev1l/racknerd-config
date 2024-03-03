@@ -1,0 +1,20 @@
+---
+- name: install unzip command
+  become: yes
+  dnf:
+    name: /usr/bin/unzip
+    state: present
+
+- name: download aws cli
+  shell: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+  args:
+    creates: /tmp/awscliv2.zip
+
+- name: unzip aws cli installer
+  shell: unzip /tmp/awscliv2.zip -d /tmp/awscli
+  args:
+    creates: /tmp/awscli
+
+- name: install awscliv2
+  become: yes
+  shell: /tmp/awscli/aws/install

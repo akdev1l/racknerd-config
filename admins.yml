@@ -1,8 +1,9 @@
 ---
 - name: create users for administration
   vars_files:
-    - vars/secrets.yml
     - vars/admins.yml
+    - vars/admins.secrets.yml
+    - vars/secrets.yml
   hosts: all
   tasks:
     - import_tasks: ./tasks/admin-user.yml

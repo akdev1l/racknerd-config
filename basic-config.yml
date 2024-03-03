@@ -1,0 +1,9 @@
+---
+- name: create users for administration
+  vars_files:
+    - vars/secrets.yml
+    - vars/admins.yml
+  hosts: all
+  tasks:
+    - import_tasks: ./tasks/base/awscli.yml
+    - import_tasks: ./tasks/base/epel.yml

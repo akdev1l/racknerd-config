@@ -9,15 +9,17 @@
     append: yes
     create_home: yes
     password: "{{item.password | password_hash('sha512', inventory_hostname | random(seed=inventory_hostname) | string)}}"
-  loop: "{{admin_users}}"
+  loop: "{{ admin_users | community.general.lists_mergeby(admin_passwords, 'name') }}"
 
 - name: add ssh keys
   become: yes
   ansible.posix.authorized_key:
-    user: "{{item.name}}"
+    user: "{{item.0.name}}"
     state: present
-    key: "{{item.key}}"
-  loop: "{{admin_users}}"
+    key: "{{item.1}}"
+  with_subelements:
+    - "{{admin_users}}"
+    - keys
 
 - name: deploy sudo configuration
   become: yes
