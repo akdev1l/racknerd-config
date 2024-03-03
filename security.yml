@@ -3,7 +3,7 @@
   hosts: all
   vars_files:
     - vars/management.yml
-    - vars/management.secrets.yml
+    - vars/secrets.yml
   vars:
     ansible_user: root
   handlers:
