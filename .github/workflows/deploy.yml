@@ -33,7 +33,7 @@ jobs:
           mkdir ~/.ssh
           umask 077
           cat > ~/.ssh/known_hosts <<EOF
-          [chicago.akdev.xyz]:5322 ${{ vars.CHICAGO_HOST_KEY }}
+          ${{ vars.CHICAGO_HOST_KEY }}
           EOF
           cat > ~/.ssh/id_ecdsa <<EOF
           ${{ secrets.MANAGEMENT_SSH_PRIVATE_KEY }}
