@@ -43,6 +43,7 @@ jobs:
       - name: deploy basic configuration
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
+          ANSIBLE_CONNECTION_PATH: /tmp/.github-actions
         run: |
           ansible-playbook -vvvv basic-config.yml
           
