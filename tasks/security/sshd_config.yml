@@ -1,0 +1,22 @@
+---
+- name: copy hardened configuration
+  notify: sshd_config_changed
+  template:
+    src: secure_sshd.conf
+    dest: /etc/ssh/sshd_config.d/secure_sshd.conf
+    owner: 0600
+
+- name: open up new ssh port
+  ansible.posix.firewalld:
+    port: 5322/tcp
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: deploy legal notice on login
+  template:
+    src: issue
+    dest: "{{item}}"
+  loop:
+    - /etc/issue
+    - /etc/issue.net

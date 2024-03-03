@@ -1,0 +1,7 @@
+---
+- name: deploy audit rules
+  notify: audit_config_changed
+  template:
+    src: audit.rules
+    dest: /etc/audit/rules.d/custom.rules
+    mode: '0600'

@@ -1,0 +1,44 @@
+---
+- name: disable unnecessary protocols
+  lineinfile:
+    create: yes
+    line: "install {{item}} /bin/false"
+    path: "/etc/modprobe.d/{{item}}-blacklist.conf"
+  loop:
+    - dccp
+    - sctp
+    - rds
+    - tipc
+
+- name: configure kernel knobs via sysctl
+  ansible.posix.sysctl:
+    name:  "{{item.name}}"
+    value: "{{item.value}}"
+    state: present
+  loop:
+    - name: dev.tty.ldisc_autoload
+      value: 0
+    - name: fs.protected_fifos
+      value: 2
+    - name: fs.protected_regular
+      value: 1
+    - name: fs.suid_dumpable
+      value: 0
+    - name: kernel.dmesg_restrict
+      value: 1
+    - name: kernel.sysrq
+      value: 0
+    - name: kernel.unprivileged_bpf_disabled 
+      value: 0
+    - name: kernel.yama.ptrace_scope
+      value: 1
+    - name: net.core.bpf_jit_harden
+      value: 2
+    - name: net.ipv4.conf.all.accept_redirects 
+      value: 0
+    - name: net.ipv4.conf.all.send_redirects 
+      value: 0
+    - name: net.ipv4.conf.default.accept_redirects 
+      value: 0
+    - name: net.ipv4.conf.all.rp_filter
+      value: 1

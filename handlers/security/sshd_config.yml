@@ -1,0 +1,6 @@
+---
+- name: reload sshd configuration
+  listen: sshd_config_changed
+  systemd:
+    service: sshd
+    state: reloaded

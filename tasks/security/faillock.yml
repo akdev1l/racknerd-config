@@ -1,0 +1,30 @@
+---
+- name: add pam_faillock to PAM configuration
+  lineinfile:
+    insertbefore: "^auth.*pam_unix.so"
+    line: "auth        required      pam_faillock.so preauth silent audit deny=3 unlock_time=600"
+    state: present
+    path: "{{item}}"
+  loop:
+    - /etc/pam.d/password-auth
+    - /etc/pam.d/system-auth
+
+- name: add entry to PAM configuration
+  lineinfile:
+    insertafter: "^auth.*pam_unix.so"
+    line: "auth        [default=die] pam_faillock.so authfail audit deny=3 unlock_time=600"
+    state: present
+    path: "{{item}}"
+  loop:
+    - /etc/pam.d/password-auth
+    - /etc/pam.d/system-auth
+
+- name: add pam_faillock to PAM configuration
+  lineinfile:
+    insertbefore: "^account.*pam_unix.so"
+    line: "account     required      pam_faillock.so"
+    state: present
+    path: "{{item}}"
+  loop:
+    - /etc/pam.d/password-auth
+    - /etc/pam.d/system-auth

@@ -1,0 +1,25 @@
+---
+- name: create user
+  user:
+    name: management
+    state: present
+    comment: system management user
+    groups: wheel
+    append: yes
+    home: /var/lib/management
+    create_home: yes
+    password: "{{management_user_password | password_hash('sha512', inventory_hostname | random(seed=inventory_hostname) | string)}}"
+
+- name: add ssh keys
+  ansible.posix.authorized_key:
+    user: management
+    state: present
+    key: "{{item}}"
+  loop: "{{management_ssh_keys}}"
+
+- name: deploy sudo configuration
+  template:
+    src: management-sudoers
+    dest: /etc/sudoers.d/management-sudoers
+    owner: root
+    mode: '0600'

@@ -1,0 +1,6 @@
+---
+- name: reload auditd configuration
+  listen: audit_config_changed
+  systemd:
+    service: auditd
+    state: reloaded

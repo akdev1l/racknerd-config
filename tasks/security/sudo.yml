@@ -1,0 +1,7 @@
+---
+- name: deploy sudo configuration
+  templates:
+    src: management-sudoers
+    dest: /etc/sudoers.d/management-sudoers
+    owner: root
+    mode: '0600'

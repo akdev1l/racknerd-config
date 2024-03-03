@@ -1,0 +1,18 @@
+---
+- name: implement security standards
+  hosts: all
+  vars_files:
+    - vars/management.yml
+  vars:
+    ansible_user: root
+  handlers:
+    - import_tasks: ./handlers/security/audit.yml
+    - import_tasks: ./handlers/security/sshd_config.yml
+  tasks:
+    - import_tasks: ./tasks/security/management-user.yml
+    - import_tasks: ./tasks/security/sshd_config.yml
+    - import_tasks: ./tasks/security/password-policy.yml
+    - import_tasks: ./tasks/security/faillock.yml
+    - import_tasks: ./tasks/security/audit.yml
+    - import_tasks: ./tasks/security/kernel.yml
+    - import_tasks: ./tasks/security/cron.yml

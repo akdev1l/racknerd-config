@@ -1,0 +1,8 @@
+---
+- name: "deploy {{item}}"
+  template:
+    src: issue
+    dest: "{{item}}"
+  loop:
+    - /etc/issue
+    - /etc/issue.net
