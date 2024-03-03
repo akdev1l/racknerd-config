@@ -18,3 +18,5 @@
 - name: install awscliv2
   become: yes
   shell: /tmp/awscli/aws/install
+  args:
+    creates: /usr/local/bin/aws
