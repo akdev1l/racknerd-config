@@ -1,0 +1,39 @@
+---
+- name: add tailscale repository
+  become: yes
+  ansible.builtin.yum_repository:
+    name: tailscale
+    description: Tailscale Repository
+    file: tailscale
+    baseurl: https://pkgs.tailscale.com/stable/rhel/$releasever/$basearch
+    repo_gpgcheck: 1
+    gpgkey: https://pkgs.tailscale.com/stable/rhel/$releasever/repo.gpg
+    enabled: yes
+
+- name: install tailscale
+  become: yes
+  dnf:
+    name: tailscale
+    state: present
+
+- name: enable service
+  become: yes
+  systemd:
+    name: tailscaled
+    state: started
+    enabled: yes
+
+- name: enable IP forwarding
+  become: yes
+  ansible.posix.sysctl:
+    name: "{{ item }}"
+    value: 1
+    state: present
+  loop:
+    - net.ipv4.ip_forward
+    - net.ipv6.conf.all.forwarding
+
+- name: authenticate tailscale server
+  become: yes
+  shell: "tailscale up --auth-key {{tailscale_auth_key}} {{'--advertise-exit-node' if (tailscale_exit_node | default(False))}}"
+

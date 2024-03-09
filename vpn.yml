@@ -1,0 +1,9 @@
+---
+- name: deploy monitoring configuration
+  hosts: all
+  vars_prompt:
+    - prompt: enter tailscale auth-key
+      name: tailscale_auth_key
+      private: no
+  tasks:
+    - import_tasks: ./tasks/tailscale/install.yml
